@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '7.1.1'
+}
+
+group 'edu.pucmm.eict'
+version '1.0-SNAPSHOT'
+
+mainClassName = "edu.pucmm.eict.jhm.Main"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    implementation group: 'io.javalin', name: 'javalin', version: '4.1.1'
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.32'
+    implementation group: 'com.j2html', name: 'j2html', version: '1.4.0'
+
+}
+
+test {
+    useJUnitPlatform()
+}

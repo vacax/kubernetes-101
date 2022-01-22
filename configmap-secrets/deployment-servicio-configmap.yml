@@ -1,0 +1,87 @@
+# Archivo que contiene el deployment y el servicios
+# todo en un mismo archivo.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: deployment-configmap-basico
+  name: deployment-configmap-basico
+spec:
+  # Indica la cantidad de replicas que tendremos para el servicio.
+  replicas: 4
+  selector:
+    matchLabels:
+      # Selector para controlar los pods del deployments
+      app: deployment-configmap-basico
+  strategy: {}
+  template: # La misma información de los Pods.
+    metadata:
+      creationTimestamp: null
+      labels:
+        # Selector para utilizarlo en los servicios.
+        app: deployment-configmap-basico
+    spec:
+      containers:
+      - image: vacax/javalin-hola-mundo
+        name: javalin-hola-mundo-deployment-configmap
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: VARIABLE1
+            valueFrom:
+              # Indicando que estaremos haciendo referencia desde un objeto
+              # tipo ConfigMap
+              configMapKeyRef:
+                # Indicando el nombre del configmap.
+                name: mi-configmap
+                # 
+                key: VARIABLE1
+          - name: VARIABLE2
+            valueFrom:
+              configMapKeyRef:
+                name: mi-configmap
+                key: VARIABLE2     
+        ports:
+        - containerPort: 7000
+          name: puerto-javalin
+        resources:
+          limits:
+            cpu: 50m
+            memory: 256M
+          requests:
+            cpu: 50m        
+            memory: 256M
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: puerto-javalin
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: deployment-configmap-basico
+  name: servicio-deployment-configmap
+spec:
+  # Para nuestro case 
+  type: NodePort
+  ports:
+  # Puerto que estamos exponiendo en el cluster
+  - port: 7000
+    protocol: TCP
+    # Puerto que escucha nuestra aplicación en el contenedor.
+    targetPort: 7000    
+  selector:
+    app: deployment-configmap-basico
+  
+status:
+  loadBalancer: {}
+  
+

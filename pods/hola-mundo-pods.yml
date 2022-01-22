@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: hola-mundo
+  name: hola-mundo
+spec:
+  containers:
+  - image: vacax/javalin-hola-mundo
+    name: hola-mundo
+    ports:
+    - containerPort: 7000
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

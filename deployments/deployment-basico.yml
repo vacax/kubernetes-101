@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: deployment-basico
+  name: deployment-basico
+spec:
+  # Indica la cantidad de replicas que tendremos para el servicio.
+  replicas: 4
+  selector:
+    matchLabels:
+      # Selector para controlar los pods del deployments
+      app: deployment-basico
+  strategy: {}
+  template: # La misma información de los Pods.
+    metadata:
+      creationTimestamp: null
+      labels:
+        # Selector para utilizarlo en los servicios.
+        app: deployment-basico
+    spec:
+      containers:
+      - image: vacax/javalin-hola-mundo
+        name: javalin-hola-mundo-deployment
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+        ports:
+        - containerPort: 7000
+          name: puerto-javalin
+        resources:
+          limits:
+            cpu: 50m
+            memory: 256M
+          requests:
+            cpu: 50m        
+            memory: 256M
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: puerto-javalin
+status: {}

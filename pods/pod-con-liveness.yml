@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: basico
+  name: pod-con-liveness
+spec:
+  containers:
+  - image: vacax/javalin-hola-mundo
+    name: pod-con-liveness
+    ports:
+    - containerPort: 7000
+    #Indicando el nombre del puerto para luego reutilizalo en otras configuraciones.
+      name: puerto-javalin
+    # Estamos indicando una cantidad que estaremos dando al servicio.    
+    resources:
+      limits:
+        cpu: 50m
+        memory: 256M
+      requests:
+        cpu: 50m        
+        memory: 256M
+    livenessProbe:
+      httpGet:
+        path: /health
+        port: puerto-javalin
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

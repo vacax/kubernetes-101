@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: mi-configmap
+data:
+  VARIABLE1: Dato Variable 1
+  VARIABLE2: Dato Variable 2

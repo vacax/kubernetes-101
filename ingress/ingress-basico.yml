@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-basico
+  # Anotaciones para indicar la forma de aplicar el rewrite
+  # ver https://github.com/kubernetes/ingress-nginx/blob/main/docs/examples/rewrite/README.md
+  #annotations:
+  #  nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  rules:
+      # Indicando el host que estará aplicando la regla del ingress.      
+    - host: carlos-camacho.com
+      http:
+        paths:
+            # Una vez aplique el host seleccionado y si path coincide
+            # todas las peticiones serán enviadas al servicio y puerto.
+            # Notar que el servicio está creado como cluster, es decir,
+            # sin exponer puedo acceder al servicio.
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: servicio-deployment-ingress
+                port:
+                  number: 7000
