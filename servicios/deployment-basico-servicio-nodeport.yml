@@ -63,7 +63,7 @@ spec:
       # Puerto que escucha nuestra aplicación en el contenedor.
       targetPort: 7000
       # Por defecto y por comodidad, el plano de control de Kubernetes asignará el puerto desde un rango (por defecto: 30000-32767)
-      # nodePort: 30007
+      nodePort: 30080
   selector:
     app: deployment-basico
 

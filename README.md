@@ -301,7 +301,31 @@ En Kubernetes existen distintos tipos de servicios, que son el mecanismo que per
 * El Nodeport expondrá el servicio a un puerto accesible desde la IP del node más puerto del cluster, el puerto utilizando será el mismo para todos los nodos.
 * Loadbalancer expondrá una IP y puerto que aplicará un balanceador de carga, disponible de forma sencilla en los proveedores de la nube.
 
-Vamos a probar una servicio utilizando NodePort, de esa forma con la IP del nodo y puerto 
-se estará accediendo a los pods que responden por ese selector:
+
+Probando el servicio tipo ClusterIP:
+
+* `kubectl apply -f servicios/pod-para-servicios.yml`
+* `kubectl apply -f servicios/servicio-basico.yml`
+
+Validamos que estén arriba los pods y servicios.
+
+`kubectl get all`
+
+Creamos una imagen y hacemos la llamada mediante el nombre del pod:
+
+`kubectl run --rm -i --tty mi-cliente-app --image=alpine --restart=Never -- sh`
+
+Una vez dentro del contenedor de pods:
+
+`wget pod-para-servicio:7000 -qSO-` - Notar que estamos accediendo por el nombre del pod.
+
+Vamos a probar el servicio utilizando NodePort, de esa forma con la IP del nodo y puerto 
+se estará accediendo a los pods que responden por ese selector. 
+
+Habilitando el puerto de k3d: `k3d cluster create mycluster -p "8082:30080@agent:0" --agents 2`
+
+Visualizando los nodos - `kubectl get nodes -o wide`
+
+Aplicando el servicio:
 
 `kubectl apply -f servicios/deployment-basico-servicio-nodeport.yml`
