@@ -274,6 +274,12 @@ Se pueden eliminar los deployments al igual que los pods:
 
 `kubectl delete deployment deployment-basico`
 
+Podemos escalar o disminuir los pods que intervienen en un deployment con el siguiente comando:
+
+`kubectl scale deployments deployment-basico --replicas=6`
+
+Notar que la cantidad de pods se incrementan, si ponemos un valor menor aumenta.
+
 ### Networking Kubernetes
 
 [Cluster Networking](https://kubernetes.io/docs/concepts/cluster-administration/networking/)
